@@ -3,16 +3,18 @@ from fastapi.middleware.cors import CORSMiddleware
 from typing import Dict
 import fitz  # PyMuPDF
 import joblib
+import os
+import uvicorn
 
-# Load ML model and vectorizer once on startup
-model = joblib.load(r"models/resume_classifier.pkl")
-vectorizer = joblib.load(r"models/tfidf_vectorizer.pkl")
+# Load ML model and vectorizer (use relative paths!)
+model = joblib.load("models/resume_classifier.pkl")
+vectorizer = joblib.load("models/tfidf_vectorizer.pkl")
 
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Replace in production
+    allow_origins=["*"],  # Allow all for now; secure later
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -42,11 +44,6 @@ def extract_text_from_pdf(file_bytes: bytes) -> str:
         text += page.get_text()
     return text
 
-
-import os
-import uvicorn
-
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
     uvicorn.run("main:app", host="0.0.0.0", port=port)
-
