@@ -5,8 +5,8 @@ import fitz  # PyMuPDF
 import joblib
 
 # Load ML model and vectorizer once on startup
-model = joblib.load(r"models\resume_classifier.pkl")
-vectorizer = joblib.load(r"models\tfidf_vectorizer.pkl")
+model = joblib.load(r"models/resume_classifier.pkl")
+vectorizer = joblib.load(r"models/tfidf_vectorizer.pkl")
 
 app = FastAPI()
 
